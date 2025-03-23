@@ -68,8 +68,8 @@ module.exports = {
     }`.slice(0, -2);
 
     const imports = [
-      `import client from "${config.clientPath}";`,
       `import type {
+        ApolloClient, NormalizedCacheObject,
         ${operationImport}
       } from "@apollo/client";`,
       `import { readable } from "svelte/store";`,
@@ -89,6 +89,7 @@ module.exports = {
         let operation;
         if (o.operation == "query") {
           operation = `export const ${o.name.value} = (
+            client: ApolloClient<NormalizedCacheObject>,
             options: Omit<
               WatchQueryOptions<${opv}>, 
               "query"
@@ -128,6 +129,7 @@ module.exports = {
               operation +
               `
               export const Async${o.name.value} = (
+                client: ApolloClient<NormalizedCacheObject>,
                 options: Omit<
                   QueryOptions<${opv}>,
                   "query"

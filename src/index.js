@@ -39,7 +39,7 @@ module.exports = {
             : "").slice(0, -2);
         var imports = [
             "import client from \"".concat(config.clientPath, "\";"),
-            "import type {\n        ".concat(operationImport, "\n      } from \"@apollo/client\";"),
+            "import type {\n ApolloClient, NormalizedCacheObject,       ".concat(operationImport, "\n      } from \"@apollo/client\";"),
             "import { readable } from \"svelte/store\";",
             "import type { Readable } from \"svelte/store\";",
             "import gql from \"graphql-tag\"",
@@ -53,11 +53,11 @@ module.exports = {
             var opv = "".concat(op, "Variables");
             var operation;
             if (o.operation == "query") {
-                operation = "export const ".concat(o.name.value, " = (\n            options: Omit<\n              WatchQueryOptions<").concat(opv, ">, \n              \"query\"\n            >\n          ): Readable<\n            ApolloQueryResult<").concat(op, "> & {\n              query: ObservableQuery<\n                ").concat(op, ",\n                ").concat(opv, "\n              >;\n            }\n          > => {\n            const q = client.watchQuery({\n              query: ").concat((0, pascal_case_1.pascalCase)(o.name.value), "Doc,\n              ...options,\n            });\n            var result = readable<\n              ApolloQueryResult<").concat(op, "> & {\n                query: ObservableQuery<\n                  ").concat(op, ",\n                  ").concat(opv, "\n                >;\n              }\n            >(\n              { data: {} as any, loading: true, error: undefined, networkStatus: 1, query: q },\n              (set) => {\n                q.subscribe((v: any) => {\n                  set({ ...v, query: q });\n                });\n              }\n            );\n            return result;\n          }\n        ");
+                operation = "export const ".concat(o.name.value, " = (\n   client: ApolloClient<NormalizedCacheObject>,         options: Omit<\n              WatchQueryOptions<").concat(opv, ">, \n              \"query\"\n            >\n          ): Readable<\n            ApolloQueryResult<").concat(op, "> & {\n              query: ObservableQuery<\n                ").concat(op, ",\n                ").concat(opv, "\n              >;\n            }\n          > => {\n            const q = client.watchQuery({\n              query: ").concat((0, pascal_case_1.pascalCase)(o.name.value), "Doc,\n              ...options,\n            });\n            var result = readable<\n              ApolloQueryResult<").concat(op, "> & {\n                query: ObservableQuery<\n                  ").concat(op, ",\n                  ").concat(opv, "\n                >;\n              }\n            >(\n              { data: {} as any, loading: true, error: undefined, networkStatus: 1, query: q },\n              (set) => {\n                q.subscribe((v: any) => {\n                  set({ ...v, query: q });\n                });\n              }\n            );\n            return result;\n          }\n        ");
                 if (config.asyncQuery) {
                     operation =
                         operation +
-                            "\n              export const Async".concat(o.name.value, " = (\n                options: Omit<\n                  QueryOptions<").concat(opv, ">,\n                  \"query\"\n                >\n              ) => {\n                return client.query<").concat(op, ">({query: ").concat((0, pascal_case_1.pascalCase)(o.name.value), "Doc, ...options})\n              }\n            ");
+                            "\n              export const Async".concat(o.name.value, " = (\n        client: ApolloClient<NormalizedCacheObject>,        options: Omit<\n                  QueryOptions<").concat(opv, ">,\n                  \"query\"\n                >\n              ) => {\n                return client.query<").concat(op, ">({query: ").concat((0, pascal_case_1.pascalCase)(o.name.value), "Doc, ...options})\n              }\n            ");
                 }
             }
             if (o.operation == "mutation") {
