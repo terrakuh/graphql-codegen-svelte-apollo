@@ -94,12 +94,12 @@ module.exports = {
           ) => {
             const query = client.watchQuery<${op}, ${opv}>({
               query: ${pascalCase(o.name.value)}Doc,
-              fetchPolicy: "cache-only"
+              fetchPolicy: "cache-only",
               ...options,
             });
             const result = readable<ApolloQueryResult<${op}>>(
-              q.getCurrentResult(),
-              (set) => { q.subscribe(set) }
+              query.getCurrentResult(),
+              (set) => { query.subscribe(set) }
             );
             return {
               ...result,
