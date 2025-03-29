@@ -56,9 +56,10 @@ module.exports = {
               fetchPolicy: "cache-only",
               ...options,
             });
+            const currentResult = query.getCurrentResult();
             const result = readable<ApolloQueryResult<${op}>>(
-              query.getCurrentResult(),
-              (set) => { query.subscribe(set) }
+              { ...currentResult, data: currentResult.data ?? {} },
+              (set) => { query.subscribe(v => set({ ...v, data: v.data ?? {} })) }
             );
             return {
               ...result,
