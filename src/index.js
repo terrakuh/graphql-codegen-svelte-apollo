@@ -49,38 +49,22 @@ module.exports = {
             if (o.operation == "query") {
                 operation = `export const ${o.name.value} = (
             client: ApolloClient<NormalizedCacheObject>,
-            options: Omit<
-              WatchQueryOptions<${opv}>, 
-              "query"
-            >
-          ): Readable<
-            ApolloQueryResult<${op}> & {
-              query: ObservableQuery<
-                ${op},
-                ${opv}
-              >;
-            }
-          > => {
-            const q = client.watchQuery({
+            options: Omit<WatchQueryOptions<${opv}>, "query">
+          ) => {
+            const query = client.watchQuery<${op}, ${opv}>({
               query: ${(0, pascal_case_1.pascalCase)(o.name.value)}Doc,
+              fetchPolicy: "cache-only"
               ...options,
             });
-            var result = readable<
-              ApolloQueryResult<${op}> & {
-                query: ObservableQuery<
-                  ${op},
-                  ${opv}
-                >;
-              }
-            >(
-              { data: {} as any, loading: true, error: undefined, networkStatus: 1, query: q },
-              (set) => {
-                q.subscribe((v: any) => {
-                  set({ ...v, query: q });
-                });
-              }
+            const result = readable<ApolloQueryResult<${op}>>(
+              q.getCurrentResult(),
+              (set) => { q.subscribe(set) }
             );
-            return result;
+            return {
+              ...result,
+              query,
+              useNetwork: () => query.setOptions({ fetchPolicy: "cache-first" }),
+            };
           }
         `;
                 if (config.asyncQuery) {
