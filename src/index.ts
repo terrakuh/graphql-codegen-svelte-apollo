@@ -71,7 +71,7 @@ module.exports = {
       `import type {
         ApolloClient, NormalizedCacheObject,
         ${operationImport}
-      } from "@apollo/client";`,
+      } from "@apollo/client/core";`,
       `import { readable } from "svelte/store";`,
       `import type { Readable } from "svelte/store";`,
       `import gql from "graphql-tag"`,
@@ -144,6 +144,7 @@ module.exports = {
         }
         if (o.operation == "mutation") {
           operation = `export const ${o.name.value} = (
+            client: ApolloClient<NormalizedCacheObject>,
             options: Omit<
               MutationOptions<any, ${opv}>, 
               "mutation"
@@ -158,6 +159,7 @@ module.exports = {
         }
         if (o.operation == "subscription") {
           operation = `export const ${o.name.value} = (
+            client: ApolloClient<NormalizedCacheObject>,
             options: Omit<SubscriptionOptions<${opv}>, "query">
           ) => {
             const q = client.subscribe<${op}, ${opv}>(

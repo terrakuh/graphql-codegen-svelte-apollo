@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES6",                // Specify the ECMAScript target version (ES6 in this case)
+    "module": "CommonJS",           // Specify the module code generation (CommonJS for Node.js)
+    "outDir": "./src",             // Directory to place the compiled JavaScript file
+    "rootDir": "./src",             // Root directory of the TypeScript files
+    "esModuleInterop": true,        // Allow default import syntax for CommonJS modules
+    "strict": true                  // Enable all strict type-checking options
+  },
+  "include": [
+    "src/**/*.ts"                    // Include all .ts files under the src folder
+  ],
+  "exclude": [
+    "node_modules"                   // Exclude node_modules from compilation
+  ]
+}
