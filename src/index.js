@@ -37,7 +37,6 @@ module.exports = {
         ${operationImport}
       } from "@apollo/client/core";`,
             `import { readable } from "svelte/store";`,
-            `import type { Readable } from "svelte/store";`,
             `import gql from "graphql-tag"`,
         ];
         const ops = operations
@@ -53,7 +52,6 @@ module.exports = {
           ) => {
             const query = client.watchQuery<${op}, ${opv}>({
               query: ${(0, pascal_case_1.pascalCase)(o.name.value)}Doc,
-              fetchPolicy: "cache-only",
               ...options,
             });
             const currentResult = query.getCurrentResult();
@@ -64,7 +62,6 @@ module.exports = {
             return {
               ...result,
               query,
-              useNetwork: () => query.setOptions({ fetchPolicy: "cache-first" }),
             };
           }
         `;
