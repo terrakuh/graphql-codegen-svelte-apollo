@@ -55,9 +55,9 @@ module.exports = {
               ...options,
             });
             const currentResult = query.getCurrentResult();
-            const result = readable<ApolloQueryResult<${op}>>(
-              { ...currentResult, data: currentResult.data ?? {} },
-              (set) => { query.subscribe(v => set({ ...v, data: v.data ?? {} })) }
+            const result = readable<ApolloQueryResult<${op} | undefined>>(
+              { ...currentResult },
+              (set) => { query.subscribe(v => set({ ...v })) }
             );
             return {
               ...result,
