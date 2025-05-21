@@ -69,7 +69,7 @@ module.exports = {
 
     const imports = [
       `import type {
-        ApolloClient, NormalizedCacheObject,
+        ApolloClient, NormalizedCacheObject, TypedDocumentNode,
         ${operationImport}
       } from "@apollo/client/core";`,
       `import { readable } from "svelte/store";`,
@@ -78,11 +78,11 @@ module.exports = {
 
     const ops = operations
       .map((o) => {
-        const dsl = `export const ${o.name.value}Doc = gql\`${
+        const dsl = `export const ${o.name?.value}Doc = gql\`${
           documents.find((d) =>
             d.rawSDL.includes(`${o.operation} ${o.name.value}`)
           ).rawSDL
-        }\``;
+        }\` as TypedDocumentNode<${o.name?.value}>`;
         const op = `${pascalCase(o.name.value)}${pascalCase(o.operation)}`;
         const opv = `${op}Variables`;
         let operation;
