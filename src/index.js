@@ -42,7 +42,7 @@ module.exports = {
         const ops = operations
             .map((o) => {
             var _a, _b;
-            const dsl = `export const ${(_a = o.name) === null || _a === void 0 ? void 0 : _a.value}Doc = gql\`${documents.find((d) => d.rawSDL.includes(`${o.operation} ${o.name.value}`)).rawSDL}\` as TypedDocumentNode<${(_b = o.name) === null || _b === void 0 ? void 0 : _b.value}>`;
+            const dsl = `export const ${(_a = o.name) === null || _a === void 0 ? void 0 : _a.value}Doc: TypedDocumentNode<${(_b = o.name) === null || _b === void 0 ? void 0 : _b.value}> = gql\`${documents.find((d) => d.rawSDL.includes(`${o.operation} ${o.name.value}`)).rawSDL}\``;
             const op = `${(0, pascal_case_1.pascalCase)(o.name.value)}${(0, pascal_case_1.pascalCase)(o.operation)}`;
             const opv = `${op}Variables`;
             let operation;
@@ -86,7 +86,7 @@ module.exports = {
                 operation = `export const ${o.name.value} = (
             client: ApolloClient<NormalizedCacheObject>,
             options: Omit<
-              MutationOptions<any, ${opv}>, 
+              MutationOptions<${op}, ${opv}>, 
               "mutation"
             >
           ) => {
