@@ -51,45 +51,26 @@ module.exports = {
       (d) => d.kind === Kind.OPERATION_DEFINITION
     ) as OperationDefinitionNode[];
 
-    const operationImport = `${
-      operations.some((op) => op.operation == "query")
-        ? `ApolloQueryResult, ObservableQuery, WatchQueryOptions, ${
-            config.asyncQuery ? "QueryOptions, " : ""
-          }`
-        : ""
-    }${
-      operations.some((op) => op.operation == "mutation")
-        ? "MutationOptions, "
-        : ""
-    }${
-      operations.some((op) => op.operation == "subscription")
-        ? "SubscriptionOptions, "
-        : ""
-    }`.slice(0, -2);
-
     const imports = [
-      `import type {
-        ApolloClient, NormalizedCacheObject, TypedDocumentNode,
-        ${operationImport}
-      } from "@apollo/client/core";`,
+      `import type { ApolloClient } from "@apollo/client/core";`,
       `import { readable } from "svelte/store";`,
       `import gql from "graphql-tag"`,
     ];
 
     const ops = operations
       .map((o) => {
-        const dsl = `export const ${o.name?.value}Doc: TypedDocumentNode<${o.name?.value}> = gql\`${
-          documents.find((d) =>
-            d.rawSDL.includes(`${o.operation} ${o.name.value}`)
-          ).rawSDL
-        }\``;
+        // const dsl = `export const ${o.name?.value}Doc: TypedDocumentNode<${o.name?.value}> = gql\`${
+        //   documents.find((d) =>
+        //     d.rawSDL.includes(`${o.operation} ${o.name.value}`)
+        //   ).rawSDL
+        // }\``;
         const op = `${pascalCase(o.name.value)}${pascalCase(o.operation)}`;
         const opv = `${op}Variables`;
         let operation;
         if (o.operation == "query") {
           operation = `export const ${o.name.value} = (
-            client: ApolloClient<NormalizedCacheObject>,
-            options: Omit<WatchQueryOptions<${opv}>, "query">
+            client: ApolloClient,
+            options: Omit<ApolloClient.WatchQueryOptions<${op}, ${opv}>, "query">
           ) => {
             const query = client.watchQuery<${op}, ${opv}>({
               query: ${pascalCase(o.name.value)}Doc,
@@ -111,11 +92,8 @@ module.exports = {
               operation +
               `
               export const Async${o.name.value} = (
-                client: ApolloClient<NormalizedCacheObject>,
-                options: Omit<
-                  QueryOptions<${opv}>,
-                  "query"
-                >
+                client: ApolloClient,
+                options: Omit<ApolloClient.QueryOptions<${op}, ${opv}>, "query">
               ) => {
                 return client.query<${op}>({query: ${pascalCase(
                 o.name.value
@@ -126,11 +104,8 @@ module.exports = {
         }
         if (o.operation == "mutation") {
           operation = `export const ${o.name.value} = (
-            client: ApolloClient<NormalizedCacheObject>,
-            options: Omit<
-              MutationOptions<${op}, ${opv}>, 
-              "mutation"
-            >
+            client: ApolloClient,
+            options: Omit<ApolloClient.MutateOptions<${op}, ${opv}>, "mutation">
           ) => {
             const m = client.mutate<${op}, ${opv}>({
               mutation: ${pascalCase(o.name.value)}Doc,
@@ -141,15 +116,13 @@ module.exports = {
         }
         if (o.operation == "subscription") {
           operation = `export const ${o.name.value} = (
-            client: ApolloClient<NormalizedCacheObject>,
-            options: Omit<SubscriptionOptions<${opv}>, "query">
+            client: ApolloClient,
+            options: Omit<ApolloClient.SubscribeOptions<${op}, ${opv}>, "query">
           ) => {
-            const q = client.subscribe<${op}, ${opv}>(
-              {
+            const q = client.subscribe<${op}, ${opv}>({
                 query: ${pascalCase(o.name.value)}Doc,
                 ...options,
-              }
-            )
+            });
             return q;
           }`;
         }
