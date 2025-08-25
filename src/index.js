@@ -25,7 +25,7 @@ module.exports = {
         const visitorResult = (0, graphql_1.visit)(allAst, visitor);
         const operations = allAst.definitions.filter((d) => d.kind === graphql_1.Kind.OPERATION_DEFINITION);
         const imports = [
-            `import type { ApolloClient } from "@apollo/client/core";`,
+            `import type { ApolloClient, ObservableQuery } from "@apollo/client";`,
             `import { readable } from "svelte/store";`,
             `import gql from "graphql-tag"`,
         ];
@@ -49,7 +49,7 @@ module.exports = {
               ...options,
             });
             const currentResult = query.getCurrentResult();
-            const result = readable<ApolloQueryResult<${op} | undefined>>(
+            const result = readable<ObservableQuery.Result<${op} | undefined>>(
               { ...currentResult },
               (set) => { query.subscribe(v => set({ ...v })) }
             );
