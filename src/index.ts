@@ -70,16 +70,16 @@ module.exports = {
         if (o.operation == "query") {
           operation = `export const ${o.name.value} = (
             client: ApolloClient,
-            options: Omit<ApolloClient.WatchQueryOptions<${op}, ${opv}>, "query">
+            options: Omit<ApolloClient.WatchQueryOptions<${op}, ${opv}>, "query" | "returnPartialData">
           ) => {
             const query = client.watchQuery<${op}, ${opv}>({
               query: ${pascalCase(o.name.value)}Doc,
               ...options,
             });
-            const currentResult = query.getCurrentResult();
-            const result = readable<ObservableQuery.Result<${op} | undefined>>(
+            const currentResult = query.getCurrentResult() as any;
+            const result = readable<ObservableQuery.Result<${op} | undefined, "empty" | "complete">>(
               { ...currentResult },
-              (set) => { query.subscribe(v => set({ ...v })) }
+              (set) => { query.subscribe((v: any) => set({ ...(v })) }
             );
             return {
               ...result,
