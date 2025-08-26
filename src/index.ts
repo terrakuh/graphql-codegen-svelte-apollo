@@ -79,7 +79,7 @@ module.exports = {
             const currentResult = query.getCurrentResult() as any;
             const result = readable<ObservableQuery.Result<${op} | undefined, "empty" | "complete">>(
               { ...currentResult },
-              (set) => { query.subscribe((v: any) => set({ ...(v })) }
+              (set) => { query.subscribe((v: any) => set({ ...v })) }
             );
             return {
               ...result,
