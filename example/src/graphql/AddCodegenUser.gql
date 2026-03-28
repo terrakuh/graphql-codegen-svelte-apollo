@@ -1,5 +1,0 @@
-mutation AddCodegenUser($userName: String!) {
-  insert_users(objects: { name: $userName, rocket: "codegen" }) {
-    affected_rows
-  }
-}

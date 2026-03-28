@@ -1,6 +1,0 @@
-query GetLaunchesWithArgs($limit: Int) {
-  launches(limit: $limit) {
-    mission_id
-    mission_name
-  }
-}

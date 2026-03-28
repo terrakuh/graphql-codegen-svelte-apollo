@@ -1,41 +1,34 @@
 {
   "name": "graphql-codegen-svelte-apollo",
-  "author": "Thibaut Duchêne",
-  "version": "1.1.0",
-  "description": "GraphQL Code Generator plugin to generate client queries from graphql",
-  "main": "src/index.js",
-  "license": "MIT",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
   "scripts": {
-    "release": "standard-version",
-    "compile": "tsc"
-  },
-  "dependencies": {
-    "@apollo/client": "^3.2.7",
-    "@graphql-codegen/plugin-helpers": "^2.3.1",
-    "@graphql-codegen/visitor-plugin-common": "^2.5.1",
-    "camel-case": "^4.1.1",
-    "pascal-case": "^3.1.1"
-  },
-  "devDependencies": {
-    "@types/node": "^14.11.2",
-    "graphql": "^16.0.1",
-    "typescript": "^4.4.2"
-  },
-  "peerDependencies": {
-    "graphql": "^16.0.1"
+    "build": "tsc -b tsconfig.json",
+    "watch": "npm run build -- --watch"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ticruz38/graphql-codegen-svelte-apollo.git"
+    "url": "git+https://github.com/terrakuh/graphql-codegen-svelte-apollo.git"
   },
-  "keywords": [
-    "svelte",
-    "apollo",
-    "graphql",
-    "graphql-codegen"
-  ],
+  "author": "",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ticruz38/graphql-codegen-svelte-apollo/issues"
+    "url": "https://github.com/terrakuh/graphql-codegen-svelte-apollo/issues"
   },
-  "homepage": "https://github.com/ticruz38/graphql-codegen-svelte-apollo#readme"
+  "homepage": "https://github.com/terrakuh/graphql-codegen-svelte-apollo#readme",
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "prettier": "^3.8.1",
+    "typescript": "^5.9.3"
+  },
+  "peerDependencies": {
+    "@apollo/client": "^4.0.0",
+    "graphql": "^16.0.0"
+  },
+  "dependencies": {
+    "@graphql-codegen/plugin-helpers": "^6.2.0",
+    "@graphql-codegen/visitor-plugin-common": "^6.2.4",
+    "change-case": "5.4.4"
+  }
 }
