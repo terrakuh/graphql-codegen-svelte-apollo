@@ -1,11 +1,20 @@
 {
   "name": "graphql-codegen-svelte-apollo",
   "version": "1.0.0",
-  "description": "",
+  "description": "Svelte & Apollo GraphQL Codegen Plugin",
+  "private": true,
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "workspaces": [
+    "example"
+  ],
   "scripts": {
     "build": "tsc -b tsconfig.json",
-    "watch": "npm run build -- --watch"
+    "watch": "npm run build -- --watch",
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -18,17 +27,20 @@
   },
   "homepage": "https://github.com/terrakuh/graphql-codegen-svelte-apollo#readme",
   "devDependencies": {
+    "@graphql-codegen/visitor-plugin-common": "^6.2.4",
+    "@graphql-codegen/cli": "^6.1.1",
     "@types/node": "^25.5.0",
     "prettier": "^3.8.1",
     "typescript": "^5.9.3"
   },
   "peerDependencies": {
     "@apollo/client": "^4.0.0",
-    "graphql": "^16.0.0"
+    "@graphql-codegen/visitor-plugin-common": "^6.2.4",
+    "svelte": "^4.0.0 || ^5.0.0"
   },
   "dependencies": {
     "@graphql-codegen/plugin-helpers": "^6.2.0",
-    "@graphql-codegen/visitor-plugin-common": "^6.2.4",
-    "change-case": "5.4.4"
+    "change-case": "5.4.4",
+    "graphql": "^16.13.2"
   }
 }

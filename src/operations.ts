@@ -52,7 +52,7 @@ const generateQueryOperation = (name: string, typeWithOp: string, variables: str
     ...options,
   });
   const currentResult = query.getCurrentResult() as any;
-  const result = readable<ApolloClient.ApolloQueryResult<${typeWithOp} | undefined>>(
+  const result = readable<ObservableQuery.Result<${typeWithOp} | undefined, "empty" | "complete">>(
     { ...currentResult },
     (set) => {
       const subscription = query.subscribe((v: any) => set({ ...v }));
@@ -88,7 +88,7 @@ const generateMutationOperation = (name: string, typeWithOp: string, variables: 
 
 const generateSubscriptionOperation = (name: string, typeWithOp: string, variables: string) =>
 	`export const ${name} = (
-  client: ApolloClient<any>,
+  client: ApolloClient,
   options: Omit<ApolloClient.SubscribeOptions<${typeWithOp}, ${variables}>, "query">
 ) => {
   return client.subscribe<${typeWithOp}, ${variables}>({

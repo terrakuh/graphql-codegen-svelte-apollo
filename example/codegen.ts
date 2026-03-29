@@ -5,7 +5,7 @@ const config: CodegenConfig = {
 	documents: "./src/**/*.graphql",
 	generates: {
 		"./src/index.ts": {
-			plugins: ["typescript", "typescript-operations", "../dist"],
+			plugins: ["typescript", "typescript-operations", "../dist/index.js"],
 			config: {
 				useImplementingTypes: true,
 				scalars: {

@@ -1,6 +1,6 @@
 import { Types } from "@graphql-codegen/plugin-helpers";
 import { ClientSideBaseVisitor, LoadedFragment } from "@graphql-codegen/visitor-plugin-common";
-import { GraphQLSchema, Kind, OperationTypeNode } from "graphql";
+import { concatAST, GraphQLSchema, Kind, OperationTypeNode, visit } from "graphql";
 import { Config } from "./config";
 import { pascalCase } from "change-case";
 
@@ -20,7 +20,10 @@ export function generateFragments(schema: GraphQLSchema, documents: Types.Docume
 
 	const visitor = new ClientSideBaseVisitor(schema, allFragments, {}, { documentVariableSuffix: "Doc" }, documents);
 
-	return visitor.fragments;
+	const documentNodes = documents.map((document) => document.document).filter((document) => document != null);
+	const result = visit(concatAST(documentNodes), visitor);
+
+	return result.definitions.join("\n\n");
 	// const allAst = concatAST(documents.map((d) => d.document));
 
 	// const allFragments: LoadedFragment[] = [

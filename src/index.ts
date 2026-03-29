@@ -16,10 +16,7 @@ const plugin: CodegenPlugin["plugin"] = (schema, documents, config, info) => {
 
 	return {
 		prepend: imports,
-		content: [
-			/* visitor.fragments, ...visitorResult.definitions.filter((t) => typeof t === "string"),  */ fragments,
-			operations,
-		].join("\n"),
+		content: [fragments, operations].join("\n\n"),
 	};
 };
 
