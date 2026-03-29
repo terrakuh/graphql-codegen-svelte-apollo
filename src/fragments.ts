@@ -22,5 +22,5 @@ export function generateFragments(schema: GraphQLSchema, documents: Types.Docume
 	const documentNodes = documents.map((document) => document.document).filter((document) => document != null);
 	const result = visit(concatAST(documentNodes), visitor);
 
-	return [visitor.fragments, ...result.definitions].join("\n\n");
+	return [visitor.fragments, ...result.definitions.map(x => JSON.stringify(x))].join("\n\n");
 }
