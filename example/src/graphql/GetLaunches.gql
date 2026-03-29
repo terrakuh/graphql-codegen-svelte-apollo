@@ -1,6 +1,0 @@
-query GetLaunches {
-  launches {
-    mission_id
-    mission_name
-  }
-}

@@ -1,0 +1,13 @@
+type Message {
+	id: ID!
+	value: String!
+	tstamp: String
+}
+
+type Query {
+	messages: [Message!]
+}
+
+type Mutation {
+	post(msg: String!): Message
+}
